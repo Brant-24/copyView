@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cyber Blog | 个人博客</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+
+    <!-- 字体 -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Orbitron', sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top, #0f2027, #020617 70%),
+          repeating-linear-gradient(
+            180deg,
+            rgba(0, 255, 255, 0.05),
+            rgba(0, 255, 255, 0.05) 1px,
+            transparent 1px,
+            transparent 4px
+          );
+        color: #e0f7ff;
+        overflow-x: hidden;
+      }
+
+      /* 扫描线 */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+          transparent 50%,
+          rgba(0, 255, 255, 0.05) 50%
+        );
+        background-size: 100% 4px;
+        pointer-events: none;
+        animation: scan 6s linear infinite;
+      }
+
+      @keyframes scan {
+        from {
+          background-position-y: 0;
+        }
+        to {
+          background-position-y: 100%;
+        }
+      }
+
+      /* 顶部跑马灯 */
+      .marquee {
+        width: 100%;
+        overflow: hidden;
+        border-bottom: 1px solid #00f6ff55;
+        background: #020617;
+      }
+
+      .marquee span {
+        display: inline-block;
+        padding: 12px 0;
+        white-space: nowrap;
+        animation: marquee 15s linear infinite;
+        color: #00f6ff;
+        text-shadow: 0 0 10px #00f6ff;
+      }
+
+      @keyframes marquee {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+
+      /* 头部 */
+      header {
+        text-align: center;
+        padding: 60px 20px;
+      }
+
+      header h1 {
+        font-size: 48px;
+        color: #ff4ecd;
+        text-shadow:
+          0 0 10px #ff4ecd,
+          0 0 30px #ff4ecd;
+        animation: glow 2s infinite alternate;
+      }
+
+      header p {
+        margin-top: 16px;
+        color: #00f6ff;
+        letter-spacing: 2px;
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 10px #ff4ecd;
+        }
+        to {
+          text-shadow: 0 0 30px #ff4ecd;
+        }
+      }
+
+      /* 博客区域 */
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .card {
+        position: relative;
+        background: rgba(2, 6, 23, 0.85);
+        border: 1px solid #00f6ff55;
+        padding: 24px;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          transparent,
+          rgba(0, 246, 255, 0.2),
+          transparent
+        );
+        transform: translateX(-100%);
+      }
+
+      .card:hover::before {
+        animation: glitch 0.8s;
+      }
+
+      @keyframes glitch {
+        to {
+          transform: translateX(100%);
+        }
+      }
+
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow:
+          0 0 20px #00f6ff,
+          0 0 40px #ff4ecd;
+      }
+
+      .card h2 {
+        color: #ff4ecd;
+        margin-bottom: 12px;
+      }
+
+      .card p {
+        color: #c3f4ff;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .tag {
+        margin-top: 14px;
+        display: inline-block;
+        font-size: 12px;
+        padding: 4px 10px;
+        border: 1px solid #00f6ff;
+        color: #00f6ff;
+        border-radius: 20px;
+        box-shadow: 0 0 8px #00f6ff;
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px;
+        font-size: 12px;
+        color: #00f6ff88;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="marquee">
+      <span
+        >WELCOME TO MY CYBER BLOG · CODE · AI · FUTURE · HACK THE REALITY
+        ·</span
+      >
+    </div>
+
+    <header>
+      <h1>CYBER BLOG</h1>
+      <p>未来 · 代码 · 人工智能 · 数字世界</p>
+    </header>
+
+    <main class="container">
+      <div class="card">
+        <h2>🚀 我的第一篇博客</h2>
+        <p>
+          在霓虹与代码交织的世界里，记录技术、思考与未来。
+          这里不仅是博客，更是数字灵魂的存档。
+        </p>
+        <span class="tag">#Cyberpunk</span>
+      </div>
+
+      <div class="card">
+        <h2>🤖 AI 与未来</h2>
+        <p>
+          从大模型到智能体，AI 正在重塑现实世界。 我们不是旁观者，而是创造者。
+        </p>
+        <span class="tag">#AI</span>
+      </div>
+
+      <div class="card">
+        <h2>💻 前端与系统</h2>
+        <p>Vue / Node / WebGL / Three.js 打造属于自己的数字空间。</p>
+        <span class="tag">#Frontend</span>
+      </div>
+    </main>
+
+    <footer>© 2026 CYBER BLOG · ALL RIGHTS RESERVED</footer>
+  </body>
+</html>

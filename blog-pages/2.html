@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CYBER NET | BLOG</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Orbitron', sans-serif;
+      }
+
+      body {
+        background: #020617;
+        color: #e6fbff;
+        overflow-x: hidden;
+      }
+
+      /* ===== Canvas 粒子背景 ===== */
+      canvas {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+      }
+
+      /* ===== 霓虹鼠标光 ===== */
+      .cursor-glow {
+        position: fixed;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 255, 255, 0.25),
+          transparent 70%
+        );
+        pointer-events: none;
+        mix-blend-mode: screen;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+      }
+
+      /* ===== 跑马灯 ===== */
+      .marquee {
+        overflow: hidden;
+        border-bottom: 1px solid #00f6ff55;
+      }
+
+      .marquee span {
+        display: inline-block;
+        padding: 12px 0;
+        white-space: nowrap;
+        animation: marquee 12s linear infinite;
+        color: #00f6ff;
+        text-shadow: 0 0 12px #00f6ff;
+      }
+
+      @keyframes marquee {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+
+      /* ===== 故障标题 ===== */
+      header {
+        text-align: center;
+        padding: 80px 20px;
+        position: relative;
+      }
+
+      .glitch {
+        font-size: 56px;
+        position: relative;
+        color: #ff4ecd;
+      }
+
+      .glitch::before,
+      .glitch::after {
+        content: attr(data-text);
+        position: absolute;
+        inset: 0;
+      }
+
+      .glitch::before {
+        color: #00f6ff;
+        animation: glitch1 2s infinite;
+      }
+
+      .glitch::after {
+        color: #ffea00;
+        animation: glitch2 1.5s infinite;
+      }
+
+      @keyframes glitch1 {
+        0% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-2px, 2px);
+        }
+        40% {
+          transform: translate(-2px, -2px);
+        }
+        60% {
+          transform: translate(2px, 2px);
+        }
+        80% {
+          transform: translate(2px, -2px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitch2 {
+        0% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(2px, -2px);
+        }
+        40% {
+          transform: translate(2px, 2px);
+        }
+        60% {
+          transform: translate(-2px, -2px);
+        }
+        80% {
+          transform: translate(-2px, 2px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      header p {
+        margin-top: 20px;
+        color: #00f6ff;
+        letter-spacing: 3px;
+      }
+
+      /* ===== 博客卡片 ===== */
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+      }
+
+      .card {
+        position: relative;
+        background: rgba(2, 6, 23, 0.9);
+        border: 1px solid #00f6ff55;
+        padding: 28px;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: 0.3s;
+      }
+
+      .card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          transparent 50%,
+          rgba(0, 255, 255, 0.08) 50%
+        );
+        background-size: 100% 4px;
+        opacity: 0.2;
+      }
+
+      .card:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow:
+          0 0 25px #00f6ff,
+          0 0 60px #ff4ecd;
+      }
+
+      .card h2 {
+        color: #ff4ecd;
+        margin-bottom: 12px;
+      }
+
+      .card p {
+        line-height: 1.7;
+        font-size: 14px;
+        color: #c9f6ff;
+      }
+
+      .tag {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 6px 14px;
+        border: 1px solid #00f6ff;
+        border-radius: 20px;
+        color: #00f6ff;
+        box-shadow: 0 0 12px #00f6ff;
+        font-size: 12px;
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px;
+        font-size: 12px;
+        color: #00f6ff88;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="bg"></canvas>
+    <div
+      class="cursor-glow"
+      id="glow"></div>
+
+    <div class="marquee">
+      <span>CYBER NET · BLOG · AI · CODE · HACK REALITY · NIGHT CITY ·</span>
+    </div>
+
+    <header>
+      <div
+        class="glitch"
+        data-text="CYBER BLOG">
+        CYBER BLOG
+      </div>
+      <p>数字灵魂 · 霓虹代码 · 未来网络</p>
+    </header>
+
+    <main class="container">
+      <div class="card">
+        <h2>🧠 Neural Log 001</h2>
+        <p>记录在数据洪流中的思考，代码不是工具，而是意识的延伸。</p>
+        <span class="tag">#Cyber</span>
+      </div>
+
+      <div class="card">
+        <h2>🤖 AI NetRunner</h2>
+        <p>模型、Agent、自治系统，未来不是科幻，是正在运行的程序。</p>
+        <span class="tag">#AI</span>
+      </div>
+
+      <div class="card">
+        <h2>⚡ Frontend Core</h2>
+        <p>Vue / WebGL / Canvas / Three.js，构建数字城市的砖瓦。</p>
+        <span class="tag">#Frontend</span>
+      </div>
+    </main>
+
+    <footer>© 2026 CYBER NET · SYSTEM ONLINE</footer>
+
+    <script>
+      /* ===== 粒子背景 ===== */
+      const canvas = document.getElementById('bg');
+      const ctx = canvas.getContext('2d');
+      let w,
+        h,
+        particles = [];
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.6,
+          vy: (Math.random() - 0.5) * 0.6,
+          r: Math.random() * 2 + 1
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > w) p.vx *= -1;
+          if (p.y < 0 || p.y > h) p.vy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,255,255,.6)';
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+
+      /* ===== 鼠标霓虹 ===== */
+      const glow = document.getElementById('glow');
+      window.addEventListener('mousemove', (e) => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+      });
+    </script>
+  </body>
+</html>

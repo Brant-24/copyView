@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NETRUNNER CORE</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Orbitron;
+      }
+      body {
+        background: #000;
+        color: #0ff;
+        overflow: hidden;
+      }
+
+      /* ===== Matrix Canvas ===== */
+      #matrix {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+      }
+
+      /* ===== 启动遮罩 ===== */
+      #boot {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #0f0;
+        font-size: 14px;
+        z-index: 999;
+      }
+
+      /* ===== 主容器 ===== */
+      #app {
+        padding: 20px;
+      }
+
+      /* ===== 标题 ===== */
+      h1 {
+        font-size: 48px;
+        color: #ff4ecd;
+        text-shadow: 0 0 30px #ff4ecd;
+      }
+
+      /* ===== 博客卡片 ===== */
+      .cards {
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .card {
+        border: 1px solid #0ff;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.6);
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .card:hover {
+        box-shadow: 0 0 30px #0ff;
+        transform: scale(1.05);
+      }
+
+      /* ===== 终端 ===== */
+      #terminal {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 220px;
+        background: rgba(0, 0, 0, 0.85);
+        border-top: 1px solid #0ff;
+        padding: 10px;
+        font-size: 13px;
+      }
+
+      #output {
+        height: 160px;
+        overflow-y: auto;
+      }
+
+      #input {
+        width: 100%;
+        background: black;
+        border: none;
+        outline: none;
+        color: #0f0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="matrix"></canvas>
+
+    <div id="boot">SYSTEM BOOTING<span id="dots">.</span></div>
+
+    <div
+      id="app"
+      hidden>
+      <h1>NETRUNNER BLOG</h1>
+      <p>ACCESS LEVEL: ROOT</p>
+
+      <div class="cards">
+        <div
+          class="card"
+          onclick="openPost('AI CORE ONLINE')">
+          🤖 AI CORE
+        </div>
+        <div
+          class="card"
+          onclick="openPost('FRONTEND MATRIX')">
+          ⚡ FRONTEND
+        </div>
+        <div
+          class="card"
+          onclick="openPost('NEURAL LOG 001')">
+          🧠 NEURAL LOG
+        </div>
+      </div>
+    </div>
+
+    <div id="terminal">
+      <div id="output">Type <b>help</b> to begin.</div>
+      <input
+        id="input"
+        placeholder="root@netrunner:~$" />
+    </div>
+
+    <script>
+      /* ===== 启动动画 ===== */
+      let dots = 0;
+      const dotEl = document.getElementById('dots');
+      const boot = document.getElementById('boot');
+      setInterval(() => {
+        dots = (dots + 1) % 4;
+        dotEl.textContent = '.'.repeat(dots);
+      }, 500);
+      setTimeout(() => {
+        boot.style.display = 'none';
+        document.getElementById('app').hidden = false;
+      }, 3000);
+
+      /* ===== Matrix 雨 ===== */
+      const c = document.getElementById('matrix');
+      const ctx = c.getContext('2d');
+      function resize() {
+        c.width = innerWidth;
+        c.height = innerHeight;
+      }
+      resize();
+      addEventListener('resize', resize);
+
+      const letters = '01アカサタナハマヤラワ';
+      const cols = Math.floor(c.width / 16);
+      const drops = Array(cols).fill(1);
+
+      function draw() {
+        ctx.fillStyle = 'rgba(0,0,0,.1)';
+        ctx.fillRect(0, 0, c.width, c.height);
+        ctx.fillStyle = '#0f0';
+        ctx.font = '16px monospace';
+        for (let i = 0; i < drops.length; i++) {
+          const text = letters[Math.floor(Math.random() * letters.length)];
+          ctx.fillText(text, i * 16, drops[i] * 16);
+          if (drops[i] * 16 > c.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+
+      /* ===== 终端命令 ===== */
+      const output = document.getElementById('output');
+      const input = document.getElementById('input');
+
+      function log(text) {
+        output.innerHTML += `<div>> ${text}</div>`;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const cmd = input.value;
+          log(cmd);
+          handle(cmd);
+          input.value = '';
+        }
+      });
+
+      function handle(cmd) {
+        switch (cmd) {
+          case 'help':
+            log('help | about | ls | clear');
+            break;
+          case 'about':
+            log('Cyberpunk Personal Blog System v2077');
+            break;
+          case 'ls':
+            log('AI_CORE  FRONTEND  NEURAL_LOG');
+            break;
+          case 'clear':
+            output.innerHTML = '';
+            break;
+          default:
+            log('command not found');
+        }
+      }
+
+      /* ===== 卡片展开 ===== */
+      function openPost(title) {
+        log('OPENING ' + title + ' ...');
+      }
+    </script>
+  </body>
+</html>

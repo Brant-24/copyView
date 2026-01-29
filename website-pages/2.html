@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>Air Series Product Page</title>
+
+    <style>
+      /* ================= 基础 ================= */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #000;
+        color: #fff;
+      }
+      section {
+        position: relative;
+      }
+
+      /* ================= 首屏 ================= */
+      .hero {
+        height: 200vh; /* 关键：滚动驱动 */
+      }
+      .hero-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .hero-media {
+        position: absolute;
+        inset: 0;
+      }
+      .hero-media video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .hero-mask {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.4),
+          rgba(0, 0, 0, 0.9)
+        );
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 10%;
+      }
+      .hero h1 {
+        font-size: 72px;
+        letter-spacing: 6px;
+      }
+      .hero p {
+        margin-top: 20px;
+        max-width: 520px;
+        color: #aaa;
+      }
+
+      /* ================= 产品卖点段 ================= */
+      .feature {
+        height: 180vh;
+      }
+      .feature-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+      }
+      .feature-left {
+        flex: 1;
+        padding: 120px;
+      }
+      .feature-left h2 {
+        font-size: 48px;
+      }
+      .feature-left p {
+        margin-top: 20px;
+        color: #aaa;
+      }
+      .feature-right {
+        flex: 1;
+        position: relative;
+      }
+      .feature-right img {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        max-width: 80%;
+        transform: scale(1);
+        transition: transform 0.8s ease;
+      }
+
+      /* ================= 动画触发 ================= */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s ease;
+      }
+      .reveal.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ================= 参数段 ================= */
+      .stats {
+        padding: 160px 10%;
+        background: #000;
+      }
+      .stats h2 {
+        font-size: 48px;
+      }
+      .stat-grid {
+        margin-top: 80px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 60px;
+      }
+      .stat .num {
+        font-size: 56px;
+        color: #1e90ff;
+      }
+      .stat span {
+        color: #aaa;
+      }
+
+      /* ================= 底部 ================= */
+      .footer {
+        padding: 80px;
+        text-align: center;
+        color: #666;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ================= Hero ================= -->
+    <section class="hero">
+      <div class="hero-sticky">
+        <div class="hero-media">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline>
+            <source
+              src="https://www-cdn.djiits.com/reactor/assets/_next/static/videos/f8303e77-9000-4578-8562-b1c94bd1b6e6.mp4" />
+          </video>
+        </div>
+        <div class="hero-mask"></div>
+        <div class="hero-content reveal">
+          <h1>Air 3 Series</h1>
+          <p>双主摄航拍系统，重新定义航拍影像。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Feature ================= -->
+    <section class="feature">
+      <div class="feature-sticky">
+        <div class="feature-left reveal">
+          <h2>双主摄系统</h2>
+          <p>广角与中长焦双主摄，满足专业航拍需求。</p>
+        </div>
+        <div class="feature-right">
+          <img
+            id="droneImg"
+            src="https://www-cdn.djiits.com/dps/b36b7f888f46c63dc1958177ec00efeb.jpg" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Stats ================= -->
+    <section class="stats">
+      <h2 class="reveal">性能参数</h2>
+      <div class="stat-grid">
+        <div class="stat">
+          <div
+            class="num"
+            data-target="46">
+            0
+          </div>
+          <span>最长续航（分钟）</span>
+        </div>
+        <div class="stat">
+          <div
+            class="num"
+            data-target="20">
+            0
+          </div>
+          <span>公里图传</span>
+        </div>
+        <div class="stat">
+          <div
+            class="num"
+            data-target="4">
+            0
+          </div>
+          <span>K HDR 视频</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">© 2026 Product Landing Page</div>
+
+    <script>
+      /* ================= 内容 Reveal（DJI 同款） ================= */
+      const reveals = document.querySelectorAll('.reveal');
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add('show');
+          });
+        },
+        {threshold: 0.4}
+      );
+      reveals.forEach((el) => revealObserver.observe(el));
+
+      /* ================= 数字动画 ================= */
+      const nums = document.querySelectorAll('.num');
+      const numObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            const el = e.target;
+            const target = Number(el.dataset.target);
+            let start = null;
+            const run = (t) => {
+              if (!start) start = t;
+              const p = Math.min((t - start) / 1500, 1);
+              el.textContent = Math.floor(target * p);
+              if (p < 1) requestAnimationFrame(run);
+            };
+            requestAnimationFrame(run);
+            numObserver.unobserve(el);
+          });
+        },
+        {threshold: 0.6}
+      );
+      nums.forEach((n) => numObserver.observe(n));
+    </script>
+  </body>
+</html>
