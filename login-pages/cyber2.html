@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cyberpunk Neon Login</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      :root {
+        --c1: #00fff7;
+        --c2: #ff00ff;
+        --c3: #00ff00;
+        --c4: #ff004c;
+        --bg: #05010d;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+      }
+
+      body {
+        height: 100vh;
+        background:
+          radial-gradient(circle at top, #16003b, transparent 60%),
+          radial-gradient(circle at bottom, #001d3d, transparent 60%), var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: #fff;
+      }
+
+      /* 背景闪烁粒子 */
+      body::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.03) 0,
+          rgba(255, 255, 255, 0.03) 1px,
+          transparent 1px,
+          transparent 6px
+        );
+        animation: bgMove 6s linear infinite;
+      }
+
+      @keyframes bgMove {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: 200px 0;
+        }
+      }
+
+      /* 登录盒子 */
+      .login {
+        position: relative;
+        width: 420px;
+        padding: 42px;
+        background: rgba(5, 5, 20, 0.85);
+        border-radius: 18px;
+        z-index: 2;
+        box-shadow:
+          0 0 30px var(--c1),
+          0 0 60px var(--c2),
+          inset 0 0 40px rgba(0, 255, 255, 0.3);
+      }
+
+      /* 跑马灯边框 */
+      .login::before,
+      .login::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 22px;
+        background: linear-gradient(
+          90deg,
+          var(--c1),
+          var(--c2),
+          var(--c3),
+          var(--c4),
+          var(--c1)
+        );
+        background-size: 400% 100%;
+        animation: marquee 3s linear infinite;
+        z-index: -1;
+      }
+
+      .login::after {
+        filter: blur(20px);
+        opacity: 0.9;
+      }
+
+      @keyframes marquee {
+        from {
+          background-position: 0% 0;
+        }
+        to {
+          background-position: 400% 0;
+        }
+      }
+
+      /* 扫描光 */
+      .scan {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(0, 255, 255, 0.15),
+          transparent
+        );
+        animation: scan 3.5s linear infinite;
+        pointer-events: none;
+      }
+
+      @keyframes scan {
+        from {
+          transform: translateY(-100%);
+        }
+        to {
+          transform: translateY(100%);
+        }
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 28px;
+        letter-spacing: 4px;
+        margin-bottom: 10px;
+        color: var(--c1);
+        text-shadow:
+          0 0 10px var(--c1),
+          0 0 20px var(--c2);
+      }
+
+      .sub {
+        text-align: center;
+        font-size: 13px;
+        color: #9cf;
+        margin-bottom: 34px;
+        opacity: 0.9;
+      }
+
+      /* 输入框 */
+      .field {
+        margin-bottom: 24px;
+      }
+
+      .field input {
+        width: 100%;
+        height: 46px;
+        background: rgba(0, 0, 0, 0.55);
+        border: 1px solid rgba(0, 255, 255, 0.5);
+        border-radius: 10px;
+        padding: 0 16px;
+        color: #fff;
+        outline: none;
+        font-size: 14px;
+        box-shadow:
+          inset 0 0 12px rgba(0, 255, 255, 0.25),
+          0 0 12px rgba(255, 0, 255, 0.3);
+      }
+
+      .field input:focus {
+        border-color: var(--c2);
+        box-shadow:
+          0 0 20px var(--c2),
+          inset 0 0 20px var(--c2);
+      }
+
+      /* 登录按钮（灯最多的地方） */
+      button {
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-radius: 14px;
+        background: linear-gradient(
+          90deg,
+          var(--c1),
+          var(--c2),
+          var(--c3),
+          var(--c4)
+        );
+        background-size: 300% 100%;
+        color: #000;
+        font-weight: bold;
+        letter-spacing: 4px;
+        cursor: pointer;
+        animation: btnLight 2.5s linear infinite;
+        box-shadow:
+          0 0 30px var(--c1),
+          0 0 60px var(--c2),
+          0 0 90px var(--c3);
+      }
+
+      @keyframes btnLight {
+        from {
+          background-position: 0% 0;
+        }
+        to {
+          background-position: 300% 0;
+        }
+      }
+
+      button:hover {
+        transform: translateY(-2px) scale(1.02);
+      }
+
+      /* 底部跑马灯文字 */
+      .footer {
+        margin-top: 26px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 12px;
+        color: #0ff;
+        text-shadow: 0 0 10px #0ff;
+      }
+
+      .footer span {
+        display: inline-block;
+        padding-left: 100%;
+        animation: textMarquee 10s linear infinite;
+      }
+
+      @keyframes textMarquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="login">
+      <div class="scan"></div>
+
+      <h1>ACCESS</h1>
+      <div class="sub">CYBERPUNK SECURITY TERMINAL</div>
+
+      <div class="field">
+        <input
+          type="text"
+          placeholder="USERNAME" />
+      </div>
+
+      <div class="field">
+        <input
+          type="password"
+          placeholder="PASSWORD" />
+      </div>
+
+      <button>LOGIN</button>
+
+      <div class="footer">
+        <span
+          >⚡ CYBER NETWORK ONLINE • SYSTEM READY • NEON MODE ENABLED • 2077
+          ⚡</span
+        >
+      </div>
+    </div>
+  </body>
+</html>

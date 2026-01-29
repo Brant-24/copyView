@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Advanced Login</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* ===================== 全局 ===================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        height: 100vh;
+        overflow: hidden;
+        font-family: 'Segoe UI', Arial;
+        color: #fff;
+        background: #000;
+      }
+
+      /* ===================== 多色动态背景 ===================== */
+      .bg {
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(circle at 20% 20%, #ff00cc, transparent 40%),
+          radial-gradient(circle at 80% 30%, #00c6ff, transparent 40%),
+          radial-gradient(circle at 50% 80%, #00ff99, transparent 40%),
+          linear-gradient(120deg, #020024, #090979, #00d4ff);
+        animation: bgMove 20s infinite alternate;
+        z-index: -3;
+      }
+
+      @keyframes bgMove {
+        0% {
+          filter: hue-rotate(0deg);
+        }
+        100% {
+          filter: hue-rotate(360deg);
+        }
+      }
+
+      /* ===================== 流光网格 ===================== */
+      .grid {
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 80px 80px;
+        animation: gridMove 10s linear infinite;
+        z-index: -2;
+      }
+
+      @keyframes gridMove {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: 80px 80px;
+        }
+      }
+
+      /* ===================== 浮动粒子 ===================== */
+      .particles span {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: linear-gradient(45deg, #fff, #00eaff);
+        border-radius: 50%;
+        animation: particle 15s linear infinite;
+      }
+
+      @keyframes particle {
+        from {
+          transform: translateY(110vh) scale(0);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(-10vh) scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* ===================== 主容器 ===================== */
+      .wrapper {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        perspective: 1200px;
+      }
+
+      /* ===================== 3D 卡片 ===================== */
+      .card {
+        width: 1050px;
+        height: 560px;
+        display: flex;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(25px);
+        box-shadow:
+          0 0 40px rgba(0, 255, 255, 0.4),
+          0 0 80px rgba(255, 0, 255, 0.3);
+        animation: floatCard 6s ease-in-out infinite;
+      }
+
+      @keyframes floatCard {
+        0%,
+        100% {
+          transform: translateY(0) rotateX(0);
+        }
+        50% {
+          transform: translateY(-20px) rotateX(6deg);
+        }
+      }
+
+      /* ===================== 左侧展示 ===================== */
+      .left {
+        flex: 1.2;
+        padding: 70px;
+        position: relative;
+      }
+
+      .left h1 {
+        font-size: 42px;
+        background: linear-gradient(90deg, #00eaff, #ff00cc, #ffcc00);
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: textFlow 6s linear infinite;
+      }
+
+      @keyframes textFlow {
+        to {
+          background-position: 200% 0;
+        }
+      }
+
+      .left p {
+        margin-top: 30px;
+        line-height: 2;
+        opacity: 0.9;
+      }
+
+      .orbit {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border: 1px dashed rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        bottom: 40px;
+        left: 60px;
+        animation: spin 20s linear infinite;
+      }
+
+      .orbit::before {
+        content: '';
+        width: 14px;
+        height: 14px;
+        background: #00eaff;
+        border-radius: 50%;
+        position: absolute;
+        top: -7px;
+        left: 50%;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ===================== 右侧表单 ===================== */
+      .right {
+        width: 420px;
+        padding: 70px 60px;
+        background: rgba(0, 0, 0, 0.35);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .right h2 {
+        font-size: 30px;
+        margin-bottom: 40px;
+      }
+
+      /* ===================== 输入框动画 ===================== */
+      .field {
+        position: relative;
+        margin-bottom: 34px;
+      }
+
+      .field input {
+        width: 100%;
+        padding: 14px;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        font-size: 16px;
+        outline: none;
+      }
+
+      .field::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #00eaff, #ff00cc, #ffcc00);
+        transition: 0.5s;
+      }
+
+      .field input:focus ~ ::after {
+      }
+
+      .field input:focus + label,
+      .field input:not(:placeholder-shown) + label {
+        top: -12px;
+        font-size: 12px;
+        color: #00eaff;
+      }
+
+      .field label {
+        position: absolute;
+        left: 0;
+        top: 14px;
+        transition: 0.3s;
+        pointer-events: none;
+        opacity: 0.7;
+      }
+
+      /* ===================== 按钮 ===================== */
+      button {
+        margin-top: 20px;
+        padding: 16px;
+        font-size: 16px;
+        border-radius: 40px;
+        border: none;
+        color: #fff;
+        background: linear-gradient(120deg, #00eaff, #ff00cc, #ffcc00);
+        background-size: 300%;
+        animation: btnFlow 4s linear infinite;
+        cursor: pointer;
+      }
+
+      @keyframes btnFlow {
+        to {
+          background-position: 300% 0;
+        }
+      }
+
+      button:hover {
+        transform: scale(1.05);
+      }
+
+      /* ===================== 底部 ===================== */
+      .footer {
+        margin-top: 30px;
+        text-align: center;
+        opacity: 0.6;
+        font-size: 13px;
+      }
+
+      /* ===================== 响应式 ===================== */
+      @media (max-width: 1000px) {
+        .card {
+          flex-direction: column;
+          width: 90%;
+          height: auto;
+        }
+        .left {
+          display: none;
+        }
+        .right {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg"></div>
+    <div class="grid"></div>
+
+    <div class="particles">
+      <span style="left: 5%; animation-delay: 0s"></span>
+      <span style="left: 20%; animation-delay: 3s"></span>
+      <span style="left: 40%; animation-delay: 6s"></span>
+      <span style="left: 60%; animation-delay: 9s"></span>
+      <span style="left: 80%; animation-delay: 12s"></span>
+    </div>
+
+    <div class="wrapper">
+      <div class="card">
+        <div class="left">
+          <h1>FUTURE INTELLIGENCE</h1>
+          <p>
+            新一代 AI / 地图 / 数字孪生平台<br />
+            多维数据融合 · 实时决策 · 智能分析
+          </p>
+          <div class="orbit"></div>
+        </div>
+
+        <div class="right">
+          <h2>系统登录</h2>
+
+          <div class="field">
+            <input
+              type="text"
+              required
+              placeholder=" " />
+            <label>用户名</label>
+          </div>
+
+          <div class="field">
+            <input
+              type="password"
+              required
+              placeholder=" " />
+            <label>密码</label>
+          </div>
+
+          <button>LOGIN SYSTEM</button>
+
+          <div class="footer">© 2026 Future Intelligence Platform</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
